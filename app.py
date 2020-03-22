@@ -1,6 +1,4 @@
 import click
-from pythonping import ping
-from tabulate import tabulate
 from functions import Functions
 
 func = Functions()
