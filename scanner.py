@@ -5,7 +5,22 @@ from mac_vendor_lookup import MacLookup
 
 class Scanner(object):
     def __init__(self):
-        pass
+        self.online_nodes = []
+        self.offline_nodes = []
+
+    def ping_node(self, node):
+        response = ping(node, size=32, timeout=1, count=1)
+        res = str(response._responses[0])
+        status = ''
+        time = ''
+        if res != 'Request timed out':
+            status = 'Online'
+            time = str(response.rtt_avg_ms)+'ms'
+        else:
+            status = 'Offline'
+            time = 'Unreachable'
+        data.append([nodes,status, time])
+        return data
 
     def run_scan(self, nodes):
         data = []
@@ -30,6 +45,7 @@ class Scanner(object):
             time = ''
             if res != 'Request timed out':
                 status = 'Online'
+                self.online_nodes.append(i)
                 time = str(response.rtt_avg_ms)+'ms'
                 try:
                     mac = MacLookup()
@@ -40,10 +56,10 @@ class Scanner(object):
                     vendor = 'N/A'
             else:
                 status = 'Offline'
+                self.offline_nodes.append(i)
                 time = 'Unreachable'
                 ip_mac = 'N/A'
                 vendor = 'N/A'
             data.append([i,status, time, ip_mac, vendor])
             bar.next()
-
         return data
