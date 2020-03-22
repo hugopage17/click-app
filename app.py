@@ -7,8 +7,6 @@ func = Functions()
 def cli():
     pass
 
-
-cli.add_command(func.run_ping)
 cli.add_command(func.view_status)
 
 if __name__ == '__main__':
